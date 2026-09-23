@@ -20,14 +20,29 @@ const title = walkTitle(walk.data.date);
   <body>
     <h1><a href="/">Lost &amp; Found</a></h1>
     <h2>{title}</h2>
-    <img src={walk.data.path} alt={`Path of the walk on ${title}`} />
+    <div class="path">
+      <img src={walk.data.path} alt={`Path of the walk on ${title}`} />
+    </div>
     <Content />
   </body>
 </html>
 
 <style>
-  body {
+  /* As wide as two homepage boxes plus the gap between them (300 + 10 + 300). */
+  .path {
+    position: relative;
+    width: 610px;
+    max-width: 100%;
+    aspect-ratio: 1;
     background: #e4e4e4;
+  }
+
+  .path img {
+    position: absolute;
+    inset: 32px;
+    width: calc(100% - 64px);
+    height: calc(100% - 64px);
+    object-fit: contain;
   }
 
   h1 a {
