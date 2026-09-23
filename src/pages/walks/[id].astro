@@ -18,8 +18,8 @@ const title = walkTitle(walk.data.date, walk.data.duration);
     <title>{title}</title>
   </head>
   <body>
-    <p><a href="/">← All walks</a></p>
-    <h1>{title}</h1>
+    <h1><a href="/">Lost &amp; Found</a></h1>
+    <h2>{title}</h2>
     <img src={walk.data.path} alt={`Path of the walk on ${title}`} />
     <Content />
   </body>

@@ -9,10 +9,10 @@ const walks = (await getCollection('walks')).sort((a, b) => b.id.localeCompare(a
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Laurel's Lost and Found</title>
+    <title>Lost &amp; Found</title>
   </head>
   <body>
-    <h1>Walks</h1>
+    <h1>Lost &amp; Found</h1>
     <ul>
       {walks.map((walk) => (
         <li><a href={`/walks/${walk.id}/`}>{walkTitle(walk.data.date, walk.data.duration)}</a></li>
