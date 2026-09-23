@@ -2,9 +2,8 @@
 import { getCollection } from 'astro:content';
 import { walkTitle } from '../walkTitle';
 
-const walks = (await getCollection('walks')).sort(
-  (a, b) => b.data.startTime.valueOf() - a.data.startTime.valueOf()
-);
+// Newest first. Ids are dates (plus -2, -3 for extra walks that day), so they sort as text.
+const walks = (await getCollection('walks')).sort((a, b) => b.id.localeCompare(a.id));
 ---
 <html lang="en">
   <head>
@@ -16,7 +15,7 @@ const walks = (await getCollection('walks')).sort(
     <h1>Walks</h1>
     <ul>
       {walks.map((walk) => (
-        <li><a href={`/walks/${walk.id}/`}>{walkTitle(walk.data.startTime, walk.data.endTime)}</a></li>
+        <li><a href={`/walks/${walk.id}/`}>{walkTitle(walk.data.date, walk.data.duration)}</a></li>
       ))}
     </ul>
   </body>

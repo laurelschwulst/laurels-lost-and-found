@@ -3,6 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "walks": "node scripts/extract-walks.mjs",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview"
