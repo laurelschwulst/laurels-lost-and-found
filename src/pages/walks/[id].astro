@@ -9,7 +9,7 @@ export async function getStaticPaths() {
 
 const { walk } = Astro.props;
 const { Content } = await render(walk);
-const title = walkTitle(walk.data.date, walk.data.duration);
+const title = walkTitle(walk.data.date);
 ---
 <html lang="en">
   <head>

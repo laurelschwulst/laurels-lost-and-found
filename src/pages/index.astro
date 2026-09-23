@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { walkDate, walkDuration, walkTitle } from '../walkTitle';
+import { walkTitle } from '../walkTitle';
 
 // Newest first. Ids are dates (plus -2, -3 for extra walks that day), so they sort as text.
 const walks = (await getCollection('walks')).sort((a, b) => b.id.localeCompare(a.id));
@@ -16,10 +16,9 @@ const walks = (await getCollection('walks')).sort((a, b) => b.id.localeCompare(a
     <ul class="walks">
       {walks.map((walk) => (
         <li>
-          <a class="walk" href={`/walks/${walk.id}/`} aria-label={walkTitle(walk.data.date, walk.data.duration)}>
+          <a class="walk" href={`/walks/${walk.id}/`}>
             <img src={walk.data.path} alt="" />
-            <span class="date">{walkDate(walk.data.date)}</span>
-            <span class="duration">{walkDuration(walk.data.duration)}</span>
+            <span class="date">{walkTitle(walk.data.date)}</span>
           </a>
         </li>
       ))}
@@ -39,13 +38,13 @@ const walks = (await getCollection('walks')).sort((a, b) => b.id.localeCompare(a
   .walk {
     position: relative;
     display: block;
-    width: 200px;
+    width: 300px;
     aspect-ratio: 1;
     background: #eee;
     color: inherit;
     text-decoration: none;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 13px;
+    font-size: 16px;
     transition: background 0.25s ease;
   }
 
@@ -53,12 +52,12 @@ const walks = (await getCollection('walks')).sort((a, b) => b.id.localeCompare(a
     background: #e4e4e4;
   }
 
-  /* The path sits inside the box, clear of the corner labels. */
+  /* The path sits inside the box, clear of the date. */
   .walk img {
     position: absolute;
-    inset: 24px;
-    width: calc(100% - 48px);
-    height: calc(100% - 48px);
+    inset: 32px;
+    width: calc(100% - 64px);
+    height: calc(100% - 64px);
     object-fit: contain;
   }
 
@@ -66,11 +65,5 @@ const walks = (await getCollection('walks')).sort((a, b) => b.id.localeCompare(a
     position: absolute;
     top: 6px;
     left: 6px;
-  }
-
-  .duration {
-    position: absolute;
-    bottom: 6px;
-    right: 6px;
   }
 </style>
