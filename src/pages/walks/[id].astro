@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from 'astro:content';
+import { walkTitle } from '../../walkTitle';
+
+export async function getStaticPaths() {
+  const walks = await getCollection('walks');
+  return walks.map((walk) => ({ params: { id: walk.id }, props: { walk } }));
+}
+
+const { walk } = Astro.props;
+const { Content } = await render(walk);
+const title = walkTitle(walk.data.date, walk.data.duration);
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <p><a href="/">← All walks</a></p>
+    <h1>{title}</h1>
+    <img src={walk.data.path} alt={`Path of the walk on ${title}`} />
+    <Content />
+  </body>
+</html>

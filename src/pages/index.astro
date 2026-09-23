@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import { walkTitle } from '../walkTitle';
+
+const walks = (await getCollection('walks')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Laurel's Lost and Found</title>
+  </head>
+  <body>
+    <h1>Walks</h1>
+    <ul>
+      {walks.map((walk) => (
+        <li><a href={`/walks/${walk.id}/`}>{walkTitle(walk.data.date, walk.data.duration)}</a></li>
+      ))}
+    </ul>
+  </body>
+</html>
