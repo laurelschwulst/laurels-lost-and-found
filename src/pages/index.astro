@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { walkTitle } from '../walkTitle';
+import { walkDate, walkDuration, walkTitle } from '../walkTitle';
 
 // Newest first. Ids are dates (plus -2, -3 for extra walks that day), so they sort as text.
 const walks = (await getCollection('walks')).sort((a, b) => b.id.localeCompare(a.id));
@@ -13,10 +13,64 @@ const walks = (await getCollection('walks')).sort((a, b) => b.id.localeCompare(a
   </head>
   <body>
     <h1>Lost &amp; Found</h1>
-    <ul>
+    <ul class="walks">
       {walks.map((walk) => (
-        <li><a href={`/walks/${walk.id}/`}>{walkTitle(walk.data.date, walk.data.duration)}</a></li>
+        <li>
+          <a class="walk" href={`/walks/${walk.id}/`} aria-label={walkTitle(walk.data.date, walk.data.duration)}>
+            <img src={walk.data.path} alt="" />
+            <span class="date">{walkDate(walk.data.date)}</span>
+            <span class="duration">{walkDuration(walk.data.duration)}</span>
+          </a>
+        </li>
       ))}
     </ul>
   </body>
 </html>
+
+<style>
+  .walks {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .walk {
+    position: relative;
+    display: block;
+    width: 200px;
+    aspect-ratio: 1;
+    background: #eee;
+    color: inherit;
+    text-decoration: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    transition: background 0.25s ease;
+  }
+
+  .walk:hover {
+    background: #e4e4e4;
+  }
+
+  /* The path sits inside the box, clear of the corner labels. */
+  .walk img {
+    position: absolute;
+    inset: 24px;
+    width: calc(100% - 48px);
+    height: calc(100% - 48px);
+    object-fit: contain;
+  }
+
+  .date {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+  }
+
+  .duration {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+  }
+</style>

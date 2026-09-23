@@ -44,7 +44,7 @@ function pathSvg(locationPoints) {
     .join(' ');
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
-  <polyline points="${polyline}" fill="none" stroke="black" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" />
+  <polyline points="${polyline}" fill="none" stroke="black" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
 </svg>
 `;
 }
