@@ -1,6 +1,7 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { walkTitle } from '../../walkTitle';
+import WalkPath from '../../WalkPath.astro';
 
 export async function getStaticPaths() {
   const walks = await getCollection('walks');
@@ -8,8 +9,7 @@ export async function getStaticPaths() {
 }
 
 const { walk } = Astro.props;
-const { Content } = await render(walk);
-const title = walkTitle(walk.data.date, walk.data.duration);
+const title = walkTitle(walk.data.startTime, walk.data.endTime);
 ---
 <html lang="en">
   <head>
@@ -20,7 +20,6 @@ const title = walkTitle(walk.data.date, walk.data.duration);
   <body>
     <p><a href="/">← All walks</a></p>
     <h1>{title}</h1>
-    <img src={walk.data.path} alt={`Path of the walk on ${title}`} />
-    <Content />
+    <WalkPath points={walk.data.locationPoints} />
   </body>
 </html>

@@ -1,0 +1,30 @@
+---
+// Draws a walk's GPS points as an SVG line.
+interface Props {
+  points: { latitude: number; longitude: number; accuracy?: number }[];
+}
+
+const SIZE = 500;
+const PADDING = 10;
+
+// Drop fixes the phone itself wasn't sure about.
+const points = Astro.props.points.filter((p) => p.accuracy === undefined || p.accuracy <= 50);
+
+// Flat projection: fine at walking scale. Longitude is squeezed by cos(latitude)
+// so the shape isn't stretched sideways.
+const midLat = points.reduce((sum, p) => sum + p.latitude, 0) / points.length;
+const xs = points.map((p) => p.longitude * Math.cos((midLat * Math.PI) / 180));
+const ys = points.map((p) => -p.latitude);
+const minX = Math.min(...xs), maxX = Math.max(...xs);
+const minY = Math.min(...ys), maxY = Math.max(...ys);
+const scale = (SIZE - PADDING * 2) / Math.max(maxX - minX, maxY - minY);
+const width = Math.round((maxX - minX) * scale + PADDING * 2);
+const height = Math.round((maxY - minY) * scale + PADDING * 2);
+
+const polyline = xs
+  .map((x, i) => `${((x - minX) * scale + PADDING).toFixed(1)},${((ys[i] - minY) * scale + PADDING).toFixed(1)}`)
+  .join(' ');
+---
+<svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
+  <polyline points={polyline} fill="none" stroke="black" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" />
+</svg>

@@ -1,13 +1,20 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { z } from 'astro/zod';
 
+// Each walk is a session.json file dropped into src/content/walks/.
+// Only the fields below are read; everything else in the file is ignored.
 const walks = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/walks' }),
+  loader: glob({ pattern: '*.json', base: './src/content/walks' }),
   schema: z.object({
-    date: z.coerce.date(),
-    duration: z.number(), // minutes
-    path: z.string(), // path to an SVG in /public
+    startTime: z.coerce.date(),
+    endTime: z.coerce.date(),
+    locationPoints: z.array(
+      z.object({
+        latitude: z.number(),
+        longitude: z.number(),
+        accuracy: z.number().optional(),
+      })
+    ),
   }),
 });
 
